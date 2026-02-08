@@ -1,1 +1,2 @@
-# _vst_fx_vscode
+# _BC_vst_comp
+basic compressor module

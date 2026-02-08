@@ -1,0 +1,319 @@
+====================[ Clean | Debug ]===========================================
+/Users/sonic.design/Applications/CLion.app/Contents/bin/cmake/mac/aarch64/bin/cmake --build /Users/sonic.design/CLionProjects/_BC_BeatBox/cmake-build-debug --target clean -j 12
+[0/2] Re-checking globbed directories...
+[1/2] Cleaning all built files...
+Cleaning... 73 files.
+
+Clean finished
+
+====================[ Build | all | Debug ]=====================================
+/Users/sonic.design/Applications/CLion.app/Contents/bin/cmake/mac/aarch64/bin/cmake --build /Users/sonic.design/CLionProjects/_BC_BeatBox/cmake-build-debug --target all -j 12
+[0/2] Re-checking globbed directories...
+[8/73] Building CXX object CMakeFiles/BeatBox.dir/Source/Audio/DrumSynthEngine.cpp.o
+/Users/sonic.design/CLionProjects/_BC_BeatBox/Source/Audio/DrumSynthEngine.cpp:20:7: warning: field 'envelopeDecay' will be initialized after field 'sampleRate' [-Wreorder-ctor]
+   16 |     : active(false)
+      |       ~~~~~~~~~~~~~
+      |       sampleRate(44100.0)
+   17 |     , phase(0.0)
+      |       ~~~~~~~~~~
+      |       active(false)
+   18 |     , phaseIncrement(0.0)
+      |       ~~~~~~~~~~~~~~~~~~~
+      |       phase(0.0)
+   19 |     , envelopePhase(0.0)
+      |       ~~~~~~~~~~~~~~~~~~
+      |       phaseIncrement(0.0)
+   20 |     , envelopeDecay(0.0)
+      |       ^~~~~~~~~~~~~~~~~~
+      |       envelopePhase(0.0)
+   21 |     , sampleRate(44100.0) {
+      |       ~~~~~~~~~~~~~~~~~~~
+      |       envelopeDecay(0.0)
+/Users/sonic.design/CLionProjects/_BC_BeatBox/Source/Audio/DrumSynthEngine.cpp:24:72: warning: declaration shadows a field of 'BeatBox::DrumSynthVoice' [-Wshadow]
+   24 | void DrumSynthVoice::trigger(DrumType type, const DrumSynthParameters& params, double sr) {
+      |                                                                        ^
+/Users/sonic.design/CLionProjects/_BC_BeatBox/Source/Audio/DrumSynthEngine.h:100:25: note: previous declaration is here
+  100 |     DrumSynthParameters params;
+      |                         ^
+/Users/sonic.design/CLionProjects/_BC_BeatBox/Source/Audio/DrumSynthEngine.cpp:84:17: warning: implicit conversion loses floating-point precision: 'double' to 'float' [-Wimplicit-float-conversion]
+   84 |     float env = std::exp(-envTime / envelopeDecay);
+      |           ~~~   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/sonic.design/CLionProjects/_BC_BeatBox/Source/Audio/DrumSynthEngine.cpp:112:38: warning: implicit conversion loses floating-point precision: 'double' to 'float' [-Wimplicit-float-conversion]
+  112 |         float currentFreq = baseFreq * (1.0f + 4.0f * std::exp(-envTime / pitchDecay));
+      |               ~~~~~~~~~~~   ~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/sonic.design/CLionProjects/_BC_BeatBox/Source/Audio/DrumSynthEngine.cpp:116:24: warning: implicit conversion loses floating-point precision: 'double' to 'float' [-Wimplicit-float-conversion]
+  116 |         float sample = std::sin(phase * juce::MathConstants<double>::twoPi);
+      |               ~~~~~~   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/sonic.design/CLionProjects/_BC_BeatBox/Source/Audio/DrumSynthEngine.cpp:121:53: warning: implicit conversion loses floating-point precision: 'double' to 'float' [-Wimplicit-float-conversion]
+  121 |         float click = params.snap * getNoiseValue() * std::exp(-envTime / 0.005f);
+      |               ~~~~~   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/sonic.design/CLionProjects/_BC_BeatBox/Source/Audio/DrumSynthEngine.cpp:149:75: warning: implicit conversion loses floating-point precision: 'double' to 'float' [-Wimplicit-float-conversion]
+  149 |         float body = std::sin(phase * juce::MathConstants<double>::twoPi) * 0.3f;
+      |               ~~~~   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~
+/Users/sonic.design/CLionProjects/_BC_BeatBox/Source/Audio/DrumSynthEngine.cpp:187:74: warning: implicit conversion loses floating-point precision: 'double' to 'float' [-Wimplicit-float-conversion]
+  187 |         float metallic = std::sin(phase * 13.0) * std::sin(phase * 17.0) * 0.2f;
+      |               ~~~~~~~~   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~
+/Users/sonic.design/CLionProjects/_BC_BeatBox/Source/Audio/DrumSynthEngine.cpp:247:38: warning: implicit conversion loses floating-point precision: 'double' to 'float' [-Wimplicit-float-conversion]
+  247 |         float currentFreq = baseFreq * (1.0f + 2.0f * std::exp(-envTime / 0.03f));
+      |               ~~~~~~~~~~~   ~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/sonic.design/CLionProjects/_BC_BeatBox/Source/Audio/DrumSynthEngine.cpp:250:24: warning: implicit conversion loses floating-point precision: 'double' to 'float' [-Wimplicit-float-conversion]
+  250 |         float sample = std::sin(phase * juce::MathConstants<double>::twoPi);
+      |               ~~~~~~   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/Users/sonic.design/CLionProjects/_BC_BeatBox/Source/Audio/DrumSynthEngine.cpp:328:16: warning: implicit conversion changes signedness: 'int' to 'size_type' (aka 'unsigned long') [-Wsign-conversion]
+  328 |         voices[i] = std::make_unique<DrumSynthVoice>();
+      |         ~~~~~~ ^
+11 warnings generated.
+[13/73] Building CXX object CMakeFiles/BeatBox.dir/Source/Audio/DrumVoice.cpp.o
+/Users/sonic.design/CLionProjects/_BC_BeatBox/Source/Audio/DrumVoice.cpp:51:31: warning: unused parameter 'midiNoteNumber' [-Wunused-parameter]
+   51 | void DrumVoice::startNote(int midiNoteNumber,
+      |                               ^
+1 warning generated.
+[14/73] Building CXX object CMakeFiles/BeatBox.dir/Source/Audio/DrumSampler.cpp.o
+/Users/sonic.design/CLionProjects/_BC_BeatBox/Source/Audio/DrumSampler.cpp:50:14: warning: implicit conversion changes signedness: 'int' to 'size_type' (aka 'unsigned long') [-Wsign-conversion]
+   50 |         pads[i].midiNote = defaultMidiNotes[i];
+      |         ~~~~ ^
+/Users/sonic.design/CLionProjects/_BC_BeatBox/Source/Audio/DrumSampler.cpp:50:45: warning: implicit conversion changes signedness: 'int' to 'size_type' (aka 'unsigned long') [-Wsign-conversion]
+   50 |         pads[i].midiNote = defaultMidiNotes[i];
+      |                            ~~~~~~~~~~~~~~~~ ^
+/Users/sonic.design/CLionProjects/_BC_BeatBox/Source/Audio/DrumSampler.cpp:51:37: warning: implicit conversion changes signedness: 'int' to 'size_type' (aka 'unsigned long') [-Wsign-conversion]
+   51 |         pads[i].name = defaultNames[i];
+      |                        ~~~~~~~~~~~~ ^
+/Users/sonic.design/CLionProjects/_BC_BeatBox/Source/Audio/DrumSampler.cpp:51:14: warning: implicit conversion changes signedness: 'int' to 'size_type' (aka 'unsigned long') [-Wsign-conversion]
+   51 |         pads[i].name = defaultNames[i];
+      |         ~~~~ ^
+/Users/sonic.design/CLionProjects/_BC_BeatBox/Source/Audio/DrumSampler.cpp:52:14: warning: implicit conversion changes signedness: 'int' to 'size_type' (aka 'unsigned long') [-Wsign-conversion]
+   52 |         pads[i].colour = juce::Colour::fromHSV(i / 16.0f, 0.6f, 0.8f, 1.0f);
+      |         ~~~~ ^
+/Users/sonic.design/CLionProjects/_BC_BeatBox/Source/Audio/DrumSampler.cpp:88:26: warning: implicit conversion changes signedness: 'int' to 'size_type' (aka 'unsigned long') [-Wsign-conversion]
+   88 |                 if (pads[i].midiNote == noteNumber) {
+      |                     ~~~~ ^
+/Users/sonic.design/CLionProjects/_BC_BeatBox/Source/Audio/DrumSampler.cpp:90:43: warning: implicit conversion changes signedness: 'int' to 'size_type' (aka 'unsigned long') [-Wsign-conversion]
+   90 |                         shouldPlay = pads[i].solo;
+      |                                      ~~~~ ^
+/Users/sonic.design/CLionProjects/_BC_BeatBox/Source/Audio/DrumSampler.cpp:92:44: warning: implicit conversion changes signedness: 'int' to 'size_type' (aka 'unsigned long') [-Wsign-conversion]
+   92 |                         shouldPlay = !pads[i].muted;
+      |                                       ~~~~ ^
+/Users/sonic.design/CLionProjects/_BC_BeatBox/Source/Audio/DrumSampler.cpp:134:34: warning: implicit conversion changes signedness: 'unsigned int' to 'int' [-Wsign-conversion]
+  134 |     sampleBuffer.setSize(reader->numChannels, (int)reader->lengthInSamples);
+      |                  ~~~~~~~ ~~~~~~~~^~~~~~~~~~~
+/Users/sonic.design/CLionProjects/_BC_BeatBox/Source/Audio/DrumSampler.cpp:138:10: warning: implicit conversion changes signedness: 'int' to 'size_type' (aka 'unsigned long') [-Wsign-conversion]
+  138 |     pads[padIndex].sampleFile = sampleFile;
+      |     ~~~~ ^~~~~~~~
+/Users/sonic.design/CLionProjects/_BC_BeatBox/Source/Audio/DrumSampler.cpp:139:10: warning: implicit conversion changes signedness: 'int' to 'size_type' (aka 'unsigned long') [-Wsign-conversion]
+  139 |     pads[padIndex].name = sampleFile.getFileNameWithoutExtension();
+      |     ~~~~ ^~~~~~~~
+/Users/sonic.design/CLionProjects/_BC_BeatBox/Source/Audio/DrumSampler.cpp:143:14: warning: implicit conversion changes signedness: 'int' to 'size_type' (aka 'unsigned long') [-Wsign-conversion]
+  143 |         pads[padIndex].name,
+      |         ~~~~ ^~~~~~~~
+/Users/sonic.design/CLionProjects/_BC_BeatBox/Source/Audio/DrumSampler.cpp:147:29: warning: implicit conversion changes signedness: 'int' to 'size_type' (aka 'unsigned long') [-Wsign-conversion]
+  147 |     sound->setMidiNote(pads[padIndex].midiNote);
+      |                        ~~~~ ^~~~~~~~
+/Users/sonic.design/CLionProjects/_BC_BeatBox/Source/Audio/DrumSampler.cpp:152:50: warning: implicit conversion changes signedness: 'int' to 'size_type' (aka 'unsigned long') [-Wsign-conversion]
+  152 |             if (drumSound->getMidiNote() == pads[padIndex].midiNote) {
+      |                                             ~~~~ ^~~~~~~~
+/Users/sonic.design/CLionProjects/_BC_BeatBox/Source/Audio/DrumSampler.cpp:171:50: warning: implicit conversion changes signedness: 'int' to 'size_type' (aka 'unsigned long') [-Wsign-conversion]
+  171 |             if (drumSound->getMidiNote() == pads[padIndex].midiNote) {
+      |                                             ~~~~ ^~~~~~~~
+/Users/sonic.design/CLionProjects/_BC_BeatBox/Source/Audio/DrumSampler.cpp:177:10: warning: implicit conversion changes signedness: 'int' to 'size_type' (aka 'unsigned long') [-Wsign-conversion]
+  177 |     pads[padIndex].sampleFile = juce::File();
+      |     ~~~~ ^~~~~~~~
+/Users/sonic.design/CLionProjects/_BC_BeatBox/Source/Audio/DrumSampler.cpp:178:10: warning: implicit conversion changes signedness: 'int' to 'size_type' (aka 'unsigned long') [-Wsign-conversion]
+  178 |     pads[padIndex].name = "Empty";
+      |     ~~~~ ^~~~~~~~
+/Users/sonic.design/CLionProjects/_BC_BeatBox/Source/Audio/DrumSampler.cpp:187:40: warning: implicit conversion changes signedness: 'int' to 'size_type' (aka 'unsigned long') [-Wsign-conversion]
+  187 |     bool shouldPlay = anySoloed ? pads[padIndex].solo : !pads[padIndex].muted;
+      |                                   ~~~~ ^~~~~~~~
+/Users/sonic.design/CLionProjects/_BC_BeatBox/Source/Audio/DrumSampler.cpp:187:63: warning: implicit conversion changes signedness: 'int' to 'size_type' (aka 'unsigned long') [-Wsign-conversion]
+  187 |     bool shouldPlay = anySoloed ? pads[padIndex].solo : !pads[padIndex].muted;
+      |                                                          ~~~~ ^~~~~~~~
+/Users/sonic.design/CLionProjects/_BC_BeatBox/Source/Audio/DrumSampler.cpp:191:25: warning: implicit conversion changes signedness: 'int' to 'size_type' (aka 'unsigned long') [-Wsign-conversion]
+  191 |     int midiNote = pads[padIndex].midiNote;
+      |                    ~~~~ ^~~~~~~~
+/Users/sonic.design/CLionProjects/_BC_BeatBox/Source/Audio/DrumSampler.cpp:204:17: warning: implicit conversion changes signedness: 'int' to 'size_type' (aka 'unsigned long') [-Wsign-conversion]
+  204 |     return pads[padIndex];
+      |            ~~~~ ^~~~~~~~
+/Users/sonic.design/CLionProjects/_BC_BeatBox/Source/Audio/DrumSampler.cpp:209:17: warning: implicit conversion changes signedness: 'int' to 'size_type' (aka 'unsigned long') [-Wsign-conversion]
+  209 |     return pads[padIndex];
+      |            ~~~~ ^~~~~~~~
+/Users/sonic.design/CLionProjects/_BC_BeatBox/Source/Audio/DrumSampler.cpp:215:10: warning: implicit conversion changes signedness: 'int' to 'size_type' (aka 'unsigned long') [-Wsign-conversion]
+  215 |     pads[padIndex] = pad;
+      |     ~~~~ ^~~~~~~~
+/Users/sonic.design/CLionProjects/_BC_BeatBox/Source/Audio/DrumSampler.cpp:237:43: warning: implicit conversion changes signedness: 'int' to 'size_type' (aka 'unsigned long') [-Wsign-conversion]
+  237 |         padXml->setAttribute("name", pads[i].name);
+      |                                      ~~~~ ^
+/Users/sonic.design/CLionProjects/_BC_BeatBox/Source/Audio/DrumSampler.cpp:238:47: warning: implicit conversion changes signedness: 'int' to 'size_type' (aka 'unsigned long') [-Wsign-conversion]
+  238 |         padXml->setAttribute("midiNote", pads[i].midiNote);
+      |                                          ~~~~ ^
+/Users/sonic.design/CLionProjects/_BC_BeatBox/Source/Audio/DrumSampler.cpp:239:44: warning: implicit conversion changes signedness: 'int' to 'size_type' (aka 'unsigned long') [-Wsign-conversion]
+  239 |         padXml->setAttribute("pitch", pads[i].pitch);
+      |                                       ~~~~ ^
+/Users/sonic.design/CLionProjects/_BC_BeatBox/Source/Audio/DrumSampler.cpp:240:42: warning: implicit conversion changes signedness: 'int' to 'size_type' (aka 'unsigned long') [-Wsign-conversion]
+  240 |         padXml->setAttribute("pan", pads[i].pan);
+      |                                     ~~~~ ^
+/Users/sonic.design/CLionProjects/_BC_BeatBox/Source/Audio/DrumSampler.cpp:241:43: warning: implicit conversion changes signedness: 'int' to 'size_type' (aka 'unsigned long') [-Wsign-conversion]
+  241 |         padXml->setAttribute("gain", pads[i].gain);
+      |                                      ~~~~ ^
+/Users/sonic.design/CLionProjects/_BC_BeatBox/Source/Audio/DrumSampler.cpp:242:46: warning: implicit conversion changes signedness: 'int' to 'size_type' (aka 'unsigned long') [-Wsign-conversion]
+  242 |         padXml->setAttribute("reverse", pads[i].reverse);
+      |                                         ~~~~ ^
+/Users/sonic.design/CLionProjects/_BC_BeatBox/Source/Audio/DrumSampler.cpp:243:44: warning: implicit conversion changes signedness: 'int' to 'size_type' (aka 'unsigned long') [-Wsign-conversion]
+  243 |         padXml->setAttribute("muted", pads[i].muted);
+      |                                       ~~~~ ^
+/Users/sonic.design/CLionProjects/_BC_BeatBox/Source/Audio/DrumSampler.cpp:244:43: warning: implicit conversion changes signedness: 'int' to 'size_type' (aka 'unsigned long') [-Wsign-conversion]
+  244 |         padXml->setAttribute("solo", pads[i].solo);
+      |                                      ~~~~ ^
+/Users/sonic.design/CLionProjects/_BC_BeatBox/Source/Audio/DrumSampler.cpp:246:18: warning: implicit conversion changes signedness: 'int' to 'size_type' (aka 'unsigned long') [-Wsign-conversion]
+  246 |         if (pads[i].sampleFile.existsAsFile()) {
+      |             ~~~~ ^
+/Users/sonic.design/CLionProjects/_BC_BeatBox/Source/Audio/DrumSampler.cpp:247:53: warning: implicit conversion changes signedness: 'int' to 'size_type' (aka 'unsigned long') [-Wsign-conversion]
+  247 |             padXml->setAttribute("sampleFile", pads[i].sampleFile.getFullPathName());
+      |                                                ~~~~ ^
+/Users/sonic.design/CLionProjects/_BC_BeatBox/Source/Audio/DrumSampler.cpp:251:46: warning: implicit conversion changes signedness: 'int' to 'size_type' (aka 'unsigned long') [-Wsign-conversion]
+  251 |         adsrXml->setAttribute("attack", pads[i].adsr.attack);
+      |                                         ~~~~ ^
+/Users/sonic.design/CLionProjects/_BC_BeatBox/Source/Audio/DrumSampler.cpp:252:45: warning: implicit conversion changes signedness: 'int' to 'size_type' (aka 'unsigned long') [-Wsign-conversion]
+  252 |         adsrXml->setAttribute("decay", pads[i].adsr.decay);
+      |                                        ~~~~ ^
+/Users/sonic.design/CLionProjects/_BC_BeatBox/Source/Audio/DrumSampler.cpp:253:47: warning: implicit conversion changes signedness: 'int' to 'size_type' (aka 'unsigned long') [-Wsign-conversion]
+  253 |         adsrXml->setAttribute("sustain", pads[i].adsr.sustain);
+      |                                          ~~~~ ^
+/Users/sonic.design/CLionProjects/_BC_BeatBox/Source/Audio/DrumSampler.cpp:254:47: warning: implicit conversion changes signedness: 'int' to 'size_type' (aka 'unsigned long') [-Wsign-conversion]
+  254 |         adsrXml->setAttribute("release", pads[i].adsr.release);
+      |                                          ~~~~ ^
+/Users/sonic.design/CLionProjects/_BC_BeatBox/Source/Audio/DrumSampler.cpp:271:18: warning: implicit conversion changes signedness: 'int' to 'size_type' (aka 'unsigned long') [-Wsign-conversion]
+  271 |             pads[index].name = padXml->getStringAttribute("name", "Empty");
+      |             ~~~~ ^~~~~
+/Users/sonic.design/CLionProjects/_BC_BeatBox/Source/Audio/DrumSampler.cpp:272:18: warning: implicit conversion changes signedness: 'int' to 'size_type' (aka 'unsigned long') [-Wsign-conversion]
+  272 |             pads[index].midiNote = padXml->getIntAttribute("midiNote", 36);
+      |             ~~~~ ^~~~~
+/Users/sonic.design/CLionProjects/_BC_BeatBox/Source/Audio/DrumSampler.cpp:273:18: warning: implicit conversion changes signedness: 'int' to 'size_type' (aka 'unsigned long') [-Wsign-conversion]
+  273 |             pads[index].pitch = (float)padXml->getDoubleAttribute("pitch", 0.0);
+      |             ~~~~ ^~~~~
+/Users/sonic.design/CLionProjects/_BC_BeatBox/Source/Audio/DrumSampler.cpp:274:18: warning: implicit conversion changes signedness: 'int' to 'size_type' (aka 'unsigned long') [-Wsign-conversion]
+  274 |             pads[index].pan = (float)padXml->getDoubleAttribute("pan", 0.5);
+      |             ~~~~ ^~~~~
+/Users/sonic.design/CLionProjects/_BC_BeatBox/Source/Audio/DrumSampler.cpp:275:18: warning: implicit conversion changes signedness: 'int' to 'size_type' (aka 'unsigned long') [-Wsign-conversion]
+  275 |             pads[index].gain = (float)padXml->getDoubleAttribute("gain", 0.0);
+      |             ~~~~ ^~~~~
+/Users/sonic.design/CLionProjects/_BC_BeatBox/Source/Audio/DrumSampler.cpp:276:18: warning: implicit conversion changes signedness: 'int' to 'size_type' (aka 'unsigned long') [-Wsign-conversion]
+  276 |             pads[index].reverse = padXml->getBoolAttribute("reverse", false);
+      |             ~~~~ ^~~~~
+/Users/sonic.design/CLionProjects/_BC_BeatBox/Source/Audio/DrumSampler.cpp:277:18: warning: implicit conversion changes signedness: 'int' to 'size_type' (aka 'unsigned long') [-Wsign-conversion]
+  277 |             pads[index].muted = padXml->getBoolAttribute("muted", false);
+      |             ~~~~ ^~~~~
+/Users/sonic.design/CLionProjects/_BC_BeatBox/Source/Audio/DrumSampler.cpp:278:18: warning: implicit conversion changes signedness: 'int' to 'size_type' (aka 'unsigned long') [-Wsign-conversion]
+  278 |             pads[index].solo = padXml->getBoolAttribute("solo", false);
+      |             ~~~~ ^~~~~
+/Users/sonic.design/CLionProjects/_BC_BeatBox/Source/Audio/DrumSampler.cpp:289:22: warning: implicit conversion changes signedness: 'int' to 'size_type' (aka 'unsigned long') [-Wsign-conversion]
+  289 |                 pads[index].adsr.attack = (float)adsrXml->getDoubleAttribute("attack", 0.001);
+      |                 ~~~~ ^~~~~
+/Users/sonic.design/CLionProjects/_BC_BeatBox/Source/Audio/DrumSampler.cpp:290:22: warning: implicit conversion changes signedness: 'int' to 'size_type' (aka 'unsigned long') [-Wsign-conversion]
+  290 |                 pads[index].adsr.decay = (float)adsrXml->getDoubleAttribute("decay", 0.0);
+      |                 ~~~~ ^~~~~
+/Users/sonic.design/CLionProjects/_BC_BeatBox/Source/Audio/DrumSampler.cpp:291:22: warning: implicit conversion changes signedness: 'int' to 'size_type' (aka 'unsigned long') [-Wsign-conversion]
+  291 |                 pads[index].adsr.sustain = (float)adsrXml->getDoubleAttribute("sustain", 1.0);
+      |                 ~~~~ ^~~~~
+/Users/sonic.design/CLionProjects/_BC_BeatBox/Source/Audio/DrumSampler.cpp:292:22: warning: implicit conversion changes signedness: 'int' to 'size_type' (aka 'unsigned long') [-Wsign-conversion]
+  292 |                 pads[index].adsr.release = (float)adsrXml->getDoubleAttribute("release", 0.05);
+      |                 ~~~~ ^~~~~
+/Users/sonic.design/CLionProjects/_BC_BeatBox/Source/Audio/DrumSampler.cpp:301:45: warning: unused parameter 'padIndex' [-Wunused-parameter]
+  301 | void DrumSampler::updateVoiceParameters(int padIndex) {
+      |                                             ^
+50 warnings generated.
+[17/73] Building CXX object CMakeFiles/BeatBox.dir/Source/PluginEditor.cpp.o
+/Users/sonic.design/CLionProjects/_BC_BeatBox/Source/PluginEditor.cpp:49:18: warning: implicit conversion changes signedness: 'int' to 'size_type' (aka 'unsigned long') [-Wsign-conversion]
+   49 |         drumPads[i] = std::move(pad);
+      |         ~~~~~~~~ ^
+/Users/sonic.design/CLionProjects/_BC_BeatBox/Source/PluginEditor.cpp:141:26: warning: 'Font' is deprecated: Use the constructor that takes a FontOptions argument [-Wdeprecated-declarations]
+  141 |     cpuLoadLabel.setFont(juce::Font(12.0f));
+      |                          ^
+/Users/sonic.design/CLionProjects/_BC_BeatBox/JUCE/modules/juce_graphics/fonts/juce_Font.h:76:7: note: 'Font' has been explicitly marked deprecated here
+   76 |     [[deprecated ("Use the constructor that takes a FontOptions argument")]]
+      |       ^
+/Users/sonic.design/CLionProjects/_BC_BeatBox/Source/PluginEditor.cpp:147:26: warning: 'Font' is deprecated: Use the constructor that takes a FontOptions argument [-Wdeprecated-declarations]
+  147 |     versionLabel.setFont(juce::Font(12.0f));
+      |                          ^
+/Users/sonic.design/CLionProjects/_BC_BeatBox/JUCE/modules/juce_graphics/fonts/juce_Font.h:76:7: note: 'Font' has been explicitly marked deprecated here
+   76 |     [[deprecated ("Use the constructor that takes a FontOptions argument")]]
+      |       ^
+/Users/sonic.design/CLionProjects/_BC_BeatBox/Source/PluginEditor.cpp:169:15: warning: 'Font' is deprecated: Use the constructor that takes a FontOptions argument [-Wdeprecated-declarations]
+  169 |     g.setFont(juce::Font(24.0f, juce::Font::bold));
+      |               ^
+/Users/sonic.design/CLionProjects/_BC_BeatBox/JUCE/modules/juce_graphics/fonts/juce_Font.h:76:7: note: 'Font' has been explicitly marked deprecated here
+   76 |     [[deprecated ("Use the constructor that takes a FontOptions argument")]]
+      |       ^
+/Users/sonic.design/CLionProjects/_BC_BeatBox/Source/PluginEditor.cpp:169:15: warning: 'Font' is deprecated: Use the constructor that takes a FontOptions argument [-Wdeprecated-declarations]
+  169 |     g.setFont(juce::Font(24.0f, juce::Font::bold));
+      |               ^
+/Users/sonic.design/CLionProjects/_BC_BeatBox/JUCE/modules/juce_graphics/fonts/juce_Font.h:76:7: note: 'Font' has been explicitly marked deprecated here
+   76 |     [[deprecated ("Use the constructor that takes a FontOptions argument")]]
+      |       ^
+/Users/sonic.design/CLionProjects/_BC_BeatBox/Source/PluginEditor.cpp:241:22: warning: implicit conversion changes signedness: 'int' to 'size_type' (aka 'unsigned long') [-Wsign-conversion]
+  241 |             drumPads[index]->setBounds(x, y, padSize, padSize);
+      |             ~~~~~~~~ ^~~~~
+/Users/sonic.design/CLionProjects/_BC_BeatBox/Source/PluginEditor.cpp:178:10: warning: unused variable 'header' [-Wunused-variable]
+  178 |     auto header = bounds.removeFromTop(40);
+      |          ^~~~~~
+/Users/sonic.design/CLionProjects/_BC_BeatBox/Source/PluginEditor.cpp:265:18: warning: implicit conversion changes signedness: 'int' to 'size_type' (aka 'unsigned long') [-Wsign-conversion]
+  265 |         drumPads[i]->setPadName(pad.name);
+      |         ~~~~~~~~ ^
+/Users/sonic.design/CLionProjects/_BC_BeatBox/Source/PluginEditor.cpp:266:18: warning: implicit conversion changes signedness: 'int' to 'size_type' (aka 'unsigned long') [-Wsign-conversion]
+  266 |         drumPads[i]->setPadColour(pad.colour);
+      |         ~~~~~~~~ ^
+/Users/sonic.design/CLionProjects/_BC_BeatBox/Source/PluginEditor.cpp:267:18: warning: implicit conversion changes signedness: 'int' to 'size_type' (aka 'unsigned long') [-Wsign-conversion]
+  267 |         drumPads[i]->setHasSample(pad.sampleFile.existsAsFile());
+      |         ~~~~~~~~ ^
+/Users/sonic.design/CLionProjects/_BC_BeatBox/Source/PluginEditor.cpp:268:18: warning: implicit conversion changes signedness: 'int' to 'size_type' (aka 'unsigned long') [-Wsign-conversion]
+  268 |         drumPads[i]->setMuted(pad.muted);
+      |         ~~~~~~~~ ^
+/Users/sonic.design/CLionProjects/_BC_BeatBox/Source/PluginEditor.cpp:269:18: warning: implicit conversion changes signedness: 'int' to 'size_type' (aka 'unsigned long') [-Wsign-conversion]
+  269 |         drumPads[i]->setSoloed(pad.solo);
+      |         ~~~~~~~~ ^
+/Users/sonic.design/CLionProjects/_BC_BeatBox/Source/PluginEditor.cpp:278:14: warning: implicit conversion changes signedness: 'int' to 'size_type' (aka 'unsigned long') [-Wsign-conversion]
+  278 |     drumPads[padIndex]->triggerAnimation();
+      |     ~~~~~~~~ ^~~~~~~~
+13 warnings generated.
+[32/73] Building CXX object CMakeFiles/BeatBox.dir/JUCE/modules/juce_gui_basics/juce_gui_basics.mm.o
+In file included from /Users/sonic.design/CLionProjects/_BC_BeatBox/JUCE/modules/juce_gui_basics/juce_gui_basics.mm:35:
+/Users/sonic.design/CLionProjects/_BC_BeatBox/JUCE/modules/juce_gui_basics/juce_gui_basics.cpp:61:2: warning: This version of JUCE does not use the splash screen, the flag JUCE_DISPLAY_SPLASH_SCREEN is ignored [-W#pragma-messages]
+   61 |  JUCE_COMPILER_WARNING ("This version of JUCE does not use the splash screen, the flag JUCE_DISPLAY_SPLASH_SCREEN is ignored")
+      |  ^
+/Users/sonic.design/CLionProjects/_BC_BeatBox/JUCE/modules/juce_core/system/juce_PlatformDefs.h:292:38: note: expanded from macro 'JUCE_COMPILER_WARNING'
+  292 |  #define JUCE_COMPILER_WARNING(msg)  _Pragma (JUCE_STRINGIFY (message (msg)))
+      |                                      ^
+<scratch space>:126:2: note: expanded from here
+  126 |  message ("This version of JUCE does not use the splash screen, the flag JUCE_DISPLAY_SPLASH_SCREEN is ignored")
+      |  ^
+1 warning generated.
+[70/73] Linking CXX CFBundle shared module "BeatBox_artefacts/Debug/AU/BC BeatBox.component/Contents/MacOS/BC BeatBox"
+/Users/sonic.design/CLionProjects/_BC_BeatBox/cmake-build-debug/BeatBox_artefacts/Debug/AU/BC BeatBox.component: code has no resources but signature indicates they must be present
+-- Replacing invalid signature with ad-hoc signature
+/Users/sonic.design/CLionProjects/_BC_BeatBox/cmake-build-debug/BeatBox_artefacts/Debug/AU/BC BeatBox.component: replacing existing signature
+-- Destination /Users/sonic.design/Library/Audio/Plug-Ins/Components/BC BeatBox.component exists, overwriting
+-- Installing: /Users/sonic.design/Library/Audio/Plug-Ins/Components/BC BeatBox.component
+-- Installing: /Users/sonic.design/Library/Audio/Plug-Ins/Components/BC BeatBox.component/Contents
+-- Installing: /Users/sonic.design/Library/Audio/Plug-Ins/Components/BC BeatBox.component/Contents/_CodeSignature
+-- Installing: /Users/sonic.design/Library/Audio/Plug-Ins/Components/BC BeatBox.component/Contents/_CodeSignature/CodeResources
+-- Installing: /Users/sonic.design/Library/Audio/Plug-Ins/Components/BC BeatBox.component/Contents/MacOS
+-- Installing: /Users/sonic.design/Library/Audio/Plug-Ins/Components/BC BeatBox.component/Contents/MacOS/BC BeatBox
+-- Installing: /Users/sonic.design/Library/Audio/Plug-Ins/Components/BC BeatBox.component/Contents/Info.plist
+-- Installing: /Users/sonic.design/Library/Audio/Plug-Ins/Components/BC BeatBox.component/Contents/PkgInfo
+[72/73] Linking CXX CFBundle shared module "BeatBox_artefacts/Debug/VST3/BC BeatBox.vst3/Contents/MacOS/BC BeatBox"
+/Users/sonic.design/CLionProjects/_BC_BeatBox/cmake-build-debug/BeatBox_artefacts/Debug/VST3/BC BeatBox.vst3: code has no resources but signature indicates they must be present
+-- Replacing invalid signature with ad-hoc signature
+/Users/sonic.design/CLionProjects/_BC_BeatBox/cmake-build-debug/BeatBox_artefacts/Debug/VST3/BC BeatBox.vst3: replacing existing signature
+removing moduleinfo.json
+creating /Users/sonic.design/CLionProjects/_BC_BeatBox/cmake-build-debug/BeatBox_artefacts/Debug/VST3/BC BeatBox.vst3
+-- Destination /Users/sonic.design/Library/Audio/Plug-Ins/VST3/BC BeatBox.vst3 exists, overwriting
+-- Installing: /Users/sonic.design/Library/Audio/Plug-Ins/VST3/BC BeatBox.vst3
+-- Installing: /Users/sonic.design/Library/Audio/Plug-Ins/VST3/BC BeatBox.vst3/Contents
+-- Installing: /Users/sonic.design/Library/Audio/Plug-Ins/VST3/BC BeatBox.vst3/Contents/_CodeSignature
+-- Installing: /Users/sonic.design/Library/Audio/Plug-Ins/VST3/BC BeatBox.vst3/Contents/_CodeSignature/CodeResources
+-- Installing: /Users/sonic.design/Library/Audio/Plug-Ins/VST3/BC BeatBox.vst3/Contents/MacOS
+-- Installing: /Users/sonic.design/Library/Audio/Plug-Ins/VST3/BC BeatBox.vst3/Contents/MacOS/BC BeatBox
+-- Installing: /Users/sonic.design/Library/Audio/Plug-Ins/VST3/BC BeatBox.vst3/Contents/Resources
+-- Installing: /Users/sonic.design/Library/Audio/Plug-Ins/VST3/BC BeatBox.vst3/Contents/Resources/moduleinfo.json
+-- Installing: /Users/sonic.design/Library/Audio/Plug-Ins/VST3/BC BeatBox.vst3/Contents/Info.plist
+-- Installing: /Users/sonic.design/Library/Audio/Plug-Ins/VST3/BC BeatBox.vst3/Contents/PkgInfo
+
+Build finished
