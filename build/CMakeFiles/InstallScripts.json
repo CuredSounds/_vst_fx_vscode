@@ -1,0 +1,11 @@
+{
+	"InstallScripts" : 
+	[
+		"/Users/sonic.design/CLionProjects/_vst_fx_vscode/build/cmake_install.cmake",
+		"/Users/sonic.design/CLionProjects/_vst_fx_vscode/build/JUCE-master/cmake_install.cmake",
+		"/Users/sonic.design/CLionProjects/_vst_fx_vscode/build/JUCE-master/modules/cmake_install.cmake",
+		"/Users/sonic.design/CLionProjects/_vst_fx_vscode/build/JUCE-master/extras/Build/cmake_install.cmake",
+		"/Users/sonic.design/CLionProjects/_vst_fx_vscode/build/JUCE-master/extras/Build/juceaide/cmake_install.cmake"
+	],
+	"Parallel" : false
+}

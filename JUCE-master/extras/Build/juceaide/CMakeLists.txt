@@ -112,6 +112,15 @@ else()
     endif()
 
     # Looks like we're bootstrapping, reinvoke CMake
+    # Allow injecting a couple of macOS-specific flags when building on newer SDKs
+    if(APPLE)
+        set(_juceaide_extra_args
+            "-D__MAC_OS_X_VERSION_MAX_ALLOWED=140000"
+            "-DCMAKE_OSX_DEPLOYMENT_TARGET=14.0")
+    else()
+        set(_juceaide_extra_args)
+    endif()
+
     execute_process(COMMAND "${CMAKE_COMMAND}"
             "."
             "-B${JUCE_BINARY_DIR}/tools"
@@ -121,6 +130,7 @@ else()
             "-DJUCE_BUILD_HELPER_TOOLS=ON"
             "-DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}"
             ${extra_compiler_flag_arguments}
+            ${_juceaide_extra_args}
         WORKING_DIRECTORY "${JUCE_SOURCE_DIR}"
         OUTPUT_VARIABLE command_output
         ERROR_VARIABLE command_output

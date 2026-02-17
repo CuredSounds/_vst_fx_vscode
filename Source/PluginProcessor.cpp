@@ -81,6 +81,39 @@ juce::AudioProcessorValueTreeState::ParameterLayout BCCompressorAudioProcessor::
         "Sidechain",
         false));
 
+    // Sidechain HPF frequency in Hz
+    layout.add (std::make_unique<juce::AudioParameterFloat> (
+        "sc_hpf",
+        "Sidechain HPF",
+        juce::NormalisableRange<float> (20.0f, 2000.0f, 1.0f, 0.3f),
+        20.0f,
+        "Hz"));
+
+    // Lookahead: enable + milliseconds
+    layout.add (std::make_unique<juce::AudioParameterBool> (
+        "lookahead",
+        "Lookahead",
+        false));
+
+    layout.add (std::make_unique<juce::AudioParameterFloat> (
+        "lookahead_ms",
+        "Lookahead (ms)",
+        juce::NormalisableRange<float> (0.0f, 100.0f, 0.1f),
+        5.0f,
+        "ms"));
+
+    // Oversampling (scaffold)
+    layout.add (std::make_unique<juce::AudioParameterBool> (
+        "oversample",
+        "Oversample",
+        false));
+
+    layout.add (std::make_unique<juce::AudioParameterChoice> (
+        "oversample_factor",
+        "Oversample Factor",
+        juce::StringArray { "1x", "2x", "4x" },
+        0));
+
     return layout;
 }
 
@@ -149,6 +182,11 @@ CompressorModule::Parameters BCCompressorAudioProcessor::getCurrentParameters() 
     params.makeupDb = apvts.getRawParameterValue ("makeup")->load();
     params.mixPercent = apvts.getRawParameterValue ("mix")->load();
     params.useSidechain = apvts.getRawParameterValue ("sidechain")->load() > 0.5f;
+    params.sidechainHpfFreq = apvts.getRawParameterValue ("sc_hpf")->load();
+    params.lookaheadEnabled = apvts.getRawParameterValue ("lookahead")->load() > 0.5f;
+    params.lookaheadMs = apvts.getRawParameterValue ("lookahead_ms")->load();
+    params.oversampleEnabled = apvts.getRawParameterValue ("oversample")->load() > 0.5f;
+    params.oversampleFactor = static_cast<int> (apvts.getRawParameterValue ("oversample_factor")->load()) == 2 ? 2 : (static_cast<int> (apvts.getRawParameterValue ("oversample_factor")->load()) == 3 ? 4 : 1);
 
     return params;
 }
@@ -158,6 +196,8 @@ void BCCompressorAudioProcessor::prepareToPlay (double sampleRate, int samplesPe
 {
     // Prepare the modular DSP unit
     compressorModule.prepare (sampleRate, samplesPerBlock, getTotalNumInputChannels());
+    // Report initial latency (lookahead) to host
+    setLatencySamples (compressorModule.getLatencySamples());
 }
 
 void BCCompressorAudioProcessor::releaseResources()

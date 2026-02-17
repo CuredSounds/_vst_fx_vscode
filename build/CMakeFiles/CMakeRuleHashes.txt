@@ -1,0 +1,5 @@
+# Hashes of file build rules.
+bc9c60873c0d2229406c22099ef76eb2 BCCompressor_artefacts/JuceLibraryCode/BCCompressor_AU/PkgInfo
+9ed0ee47efb9d9a013ee852ccee913eb BCCompressor_artefacts/JuceLibraryCode/BCCompressor_Standalone/PkgInfo
+b9a45f3d13c9dfded6687b5bb7c8fa1a BCCompressor_artefacts/JuceLibraryCode/BCCompressor_VST3/PkgInfo
+1e5dc1730b382c3bc4e1d11997439554 BCCompressor_artefacts/JuceLibraryCode/JuceHeader.h

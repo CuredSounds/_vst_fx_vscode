@@ -1,0 +1,9 @@
+{
+	"InstallScripts" : 
+	[
+		"/Users/sonic.design/CLionProjects/_vst_fx_vscode/Tests/build/cmake_install.cmake",
+		"/Users/sonic.design/CLionProjects/_vst_fx_vscode/Tests/build/_deps/catch2-build/cmake_install.cmake",
+		"/Users/sonic.design/CLionProjects/_vst_fx_vscode/Tests/build/_deps/catch2-build/src/cmake_install.cmake"
+	],
+	"Parallel" : false
+}

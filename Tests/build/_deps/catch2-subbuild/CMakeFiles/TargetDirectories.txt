@@ -1,0 +1,3 @@
+/Users/sonic.design/CLionProjects/_vst_fx_vscode/Tests/build/_deps/catch2-subbuild/CMakeFiles/catch2-populate.dir
+/Users/sonic.design/CLionProjects/_vst_fx_vscode/Tests/build/_deps/catch2-subbuild/CMakeFiles/edit_cache.dir
+/Users/sonic.design/CLionProjects/_vst_fx_vscode/Tests/build/_deps/catch2-subbuild/CMakeFiles/rebuild_cache.dir

@@ -1,0 +1,17 @@
+Sanity check 8 0.000687057
+apply_gain works for positive and negative values 8 0.000655026
+computeGainReduction hard knee 8 0.000738281
+computeGainReduction soft knee below range 8 0.000656719
+attack/release coeff calculations 8 0.000682229
+msToSamples conversion 7 0.000784649
+soft knee smooth transition at threshold 2 0.0025399
+makeup gain application 4 0.0013658
+extreme ratio (limiter behavior) 4 0.00132517
+uncompressed signals (unity ratio) 4 0.00130341
+lookahead sample count calculation at 48 kHz 4 0.0013475
+lookahead sample count at 96 kHz 4 0.00128657
+attack time faster than release time 4 0.00122558
+extreme attack/release times 4 0.0013963
+threshold boundary behavior 4 0.00151725
+sidechain HPF frequency bounds 4 0.00194669
+---

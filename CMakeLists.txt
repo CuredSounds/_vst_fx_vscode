@@ -2,11 +2,22 @@ cmake_minimum_required(VERSION 3.15)
 
 project(BC_COMPRESSOR VERSION 1.0.0)
 
-# macOS 15 compatibility: Target macOS 14.0 to avoid unavailable APIs
-set(CMAKE_OSX_DEPLOYMENT_TARGET "14.0" CACHE STRING "Minimum macOS deployment version")
+# macOS compatibility: prefer building against macOS 14 SDK behaviour when on newer SDKs.
+# This helps avoid compile-time failures where older APIs were marked unavailable in macOS 15+ SDKs.
+if(APPLE)
+    # Ensure a sane minimum deployment target (can be overridden by the user)
+    if(NOT DEFINED CMAKE_OSX_DEPLOYMENT_TARGET)
+        set(CMAKE_OSX_DEPLOYMENT_TARGET "14.0" CACHE STRING "Minimum macOS deployment version")
+    endif()
 
-# Workaround for macOS 15 deprecated API warnings
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-error=deprecated-declarations -Wno-error=unavailable-declarations")
+    # Some macOS 15 SDK headers mark previously-available APIs as unavailable.
+    # Force the compiler to use the macOS 14 maximum-allowed macro value so JUCE's
+    # compatibility code is compiled (this is a local build workaround).
+    add_compile_definitions(__MAC_OS_X_VERSION_MAX_ALLOWED=140000)
+
+    # Suppress treating deprecation/unavailable warnings as errors for third-party code.
+    add_compile_options(-Wno-error=deprecated-declarations -Wno-error=unavailable-declarations)
+endif()
 
 # Add JUCE to the project
 add_subdirectory(JUCE-master)

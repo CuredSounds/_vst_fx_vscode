@@ -1,0 +1,1 @@
+/usr/bin/c++ -g -arch arm64 -mmacosx-version-min=14.0 -Wl,-search_paths_first -Wl,-headerpad_max_install_names "CMakeFiles/juce_vst3_helper.dir/JUCE-master/modules/juce_audio_plugin_client/VST3/juce_VST3ManifestHelper.mm.o" -o juce_vst3_helper  -framework Cocoa

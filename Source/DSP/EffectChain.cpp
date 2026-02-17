@@ -153,7 +153,7 @@ void EffectChain::loadState (const juce::ValueTree& state)
 
         if (slotState.hasType ("Slot"))
         {
-            auto type = static_cast<EffectModule::Type> (slotState.getProperty ("type", 0));
+            auto type = static_cast<EffectModule::Type> (static_cast<int> (slotState.getProperty ("type", 0)));
             auto effect = EffectModuleFactory::createEffect (type);
 
             if (effect)

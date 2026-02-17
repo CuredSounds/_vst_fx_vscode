@@ -1,0 +1,5 @@
+if(EXISTS "/Users/sonic.design/CLionProjects/_vst_fx_vscode/Tests/build/test_example-b12d07c_tests.cmake")
+  include("/Users/sonic.design/CLionProjects/_vst_fx_vscode/Tests/build/test_example-b12d07c_tests.cmake")
+else()
+  add_test(test_example_NOT_BUILT-b12d07c test_example_NOT_BUILT-b12d07c)
+endif()

@@ -1,0 +1,18 @@
+{
+  // Workspace-level suggestions: these are 'unwanted' recommendations that
+  // will prompt contributors to uninstall or disable extensions that add a
+  // lot of Explorer / Activity views (helps keep this repo's UI clean).
+  // This file does NOT uninstall or disable extensions automatically.
+  "unwantedRecommendations": [
+    "eamodio.gitlens",
+    "anthropic.claude-code",
+    "openai.chatgpt",
+    "google.geminicodeassist",
+    "ms-azuretools.vscode-containers",
+    "ms-azuretools.vscode-docker",
+    "anysphere.remote-containers",
+    "sonarsource.sonarlint-vscode",
+    "ms-kubernetes-tools.vscode-kubernetes-tools",
+    "googlecloudtools.cloudcode"
+  ]
+}

@@ -1,0 +1,1 @@
+/usr/bin/c++  -arch arm64 -Wl,-search_paths_first -Wl,-headerpad_max_install_names CMakeFiles/test_example.dir/test_example.cpp.o -o test_example  _deps/catch2-build/src/libCatch2Main.a _deps/catch2-build/src/libCatch2.a

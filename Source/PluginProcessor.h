@@ -1,7 +1,7 @@
 #pragma once
 
 #include <JuceHeader.h>
-#istnclude "DSP/CompressorModule.h"
+#include "DSP/CompressorModule.h"
 
 //==============================================================================
 /**

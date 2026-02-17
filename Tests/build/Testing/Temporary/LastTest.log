@@ -1,0 +1,323 @@
+Start testing: Feb 17 10:30 EST
+----------------------------------------------------------
+1/16 Testing: Sanity check
+1/16 Test: Sanity check
+Command: "/Users/sonic.design/CLionProjects/_vst_fx_vscode/Tests/build/test_example" "Sanity check"
+Directory: /Users/sonic.design/CLionProjects/_vst_fx_vscode/Tests/build
+"Sanity check" start time: Feb 17 10:30 EST
+Output:
+----------------------------------------------------------
+Filters: "Sanity check"
+Randomness seeded to: 3412469347
+===============================================================================
+All tests passed (1 assertion in 1 test case)
+
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Passed.
+"Sanity check" end time: Feb 17 10:30 EST
+"Sanity check" time elapsed: 00:00:00
+----------------------------------------------------------
+
+2/16 Testing: apply_gain works for positive and negative values
+2/16 Test: apply_gain works for positive and negative values
+Command: "/Users/sonic.design/CLionProjects/_vst_fx_vscode/Tests/build/dsp_tests" "apply_gain works for positive and negative values"
+Directory: /Users/sonic.design/CLionProjects/_vst_fx_vscode/Tests/build
+"apply_gain works for positive and negative values" start time: Feb 17 10:30 EST
+Output:
+----------------------------------------------------------
+Filters: "apply_gain works for positive and negative values"
+Randomness seeded to: 395327555
+===============================================================================
+All tests passed (3 assertions in 1 test case)
+
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Passed.
+"apply_gain works for positive and negative values" end time: Feb 17 10:30 EST
+"apply_gain works for positive and negative values" time elapsed: 00:00:00
+----------------------------------------------------------
+
+3/16 Testing: computeGainReduction hard knee
+3/16 Test: computeGainReduction hard knee
+Command: "/Users/sonic.design/CLionProjects/_vst_fx_vscode/Tests/build/dsp_tests" "computeGainReduction hard knee"
+Directory: /Users/sonic.design/CLionProjects/_vst_fx_vscode/Tests/build
+"computeGainReduction hard knee" start time: Feb 17 10:30 EST
+Output:
+----------------------------------------------------------
+Filters: "computeGainReduction hard knee"
+Randomness seeded to: 3798016757
+===============================================================================
+All tests passed (1 assertion in 1 test case)
+
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Passed.
+"computeGainReduction hard knee" end time: Feb 17 10:30 EST
+"computeGainReduction hard knee" time elapsed: 00:00:00
+----------------------------------------------------------
+
+4/16 Testing: computeGainReduction soft knee below range
+4/16 Test: computeGainReduction soft knee below range
+Command: "/Users/sonic.design/CLionProjects/_vst_fx_vscode/Tests/build/dsp_tests" "computeGainReduction soft knee below range"
+Directory: /Users/sonic.design/CLionProjects/_vst_fx_vscode/Tests/build
+"computeGainReduction soft knee below range" start time: Feb 17 10:30 EST
+Output:
+----------------------------------------------------------
+Filters: "computeGainReduction soft knee below range"
+Randomness seeded to: 5382754
+===============================================================================
+All tests passed (1 assertion in 1 test case)
+
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Passed.
+"computeGainReduction soft knee below range" end time: Feb 17 10:30 EST
+"computeGainReduction soft knee below range" time elapsed: 00:00:00
+----------------------------------------------------------
+
+5/16 Testing: attack/release coeff calculations
+5/16 Test: attack/release coeff calculations
+Command: "/Users/sonic.design/CLionProjects/_vst_fx_vscode/Tests/build/dsp_tests" "attack/release coeff calculations"
+Directory: /Users/sonic.design/CLionProjects/_vst_fx_vscode/Tests/build
+"attack/release coeff calculations" start time: Feb 17 10:30 EST
+Output:
+----------------------------------------------------------
+Filters: "attack/release coeff calculations"
+Randomness seeded to: 3786989180
+===============================================================================
+All tests passed (3 assertions in 1 test case)
+
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Passed.
+"attack/release coeff calculations" end time: Feb 17 10:30 EST
+"attack/release coeff calculations" time elapsed: 00:00:00
+----------------------------------------------------------
+
+6/16 Testing: msToSamples conversion
+6/16 Test: msToSamples conversion
+Command: "/Users/sonic.design/CLionProjects/_vst_fx_vscode/Tests/build/dsp_tests" "msToSamples conversion"
+Directory: /Users/sonic.design/CLionProjects/_vst_fx_vscode/Tests/build
+"msToSamples conversion" start time: Feb 17 10:30 EST
+Output:
+----------------------------------------------------------
+Filters: "msToSamples conversion"
+Randomness seeded to: 3173591207
+===============================================================================
+All tests passed (2 assertions in 1 test case)
+
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Passed.
+"msToSamples conversion" end time: Feb 17 10:30 EST
+"msToSamples conversion" time elapsed: 00:00:00
+----------------------------------------------------------
+
+7/16 Testing: soft knee smooth transition at threshold
+7/16 Test: soft knee smooth transition at threshold
+Command: "/Users/sonic.design/CLionProjects/_vst_fx_vscode/Tests/build/dsp_tests" "soft knee smooth transition at threshold"
+Directory: /Users/sonic.design/CLionProjects/_vst_fx_vscode/Tests/build
+"soft knee smooth transition at threshold" start time: Feb 17 10:30 EST
+Output:
+----------------------------------------------------------
+Filters: "soft knee smooth transition at threshold"
+Randomness seeded to: 655756472
+===============================================================================
+All tests passed (5 assertions in 1 test case)
+
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Passed.
+"soft knee smooth transition at threshold" end time: Feb 17 10:30 EST
+"soft knee smooth transition at threshold" time elapsed: 00:00:00
+----------------------------------------------------------
+
+8/16 Testing: makeup gain application
+8/16 Test: makeup gain application
+Command: "/Users/sonic.design/CLionProjects/_vst_fx_vscode/Tests/build/dsp_tests" "makeup gain application"
+Directory: /Users/sonic.design/CLionProjects/_vst_fx_vscode/Tests/build
+"makeup gain application" start time: Feb 17 10:30 EST
+Output:
+----------------------------------------------------------
+Filters: "makeup gain application"
+Randomness seeded to: 4175826377
+===============================================================================
+All tests passed (1 assertion in 1 test case)
+
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Passed.
+"makeup gain application" end time: Feb 17 10:30 EST
+"makeup gain application" time elapsed: 00:00:00
+----------------------------------------------------------
+
+9/16 Testing: extreme ratio (limiter behavior)
+9/16 Test: extreme ratio (limiter behavior)
+Command: "/Users/sonic.design/CLionProjects/_vst_fx_vscode/Tests/build/dsp_tests" "extreme ratio (limiter behavior)"
+Directory: /Users/sonic.design/CLionProjects/_vst_fx_vscode/Tests/build
+"extreme ratio (limiter behavior)" start time: Feb 17 10:30 EST
+Output:
+----------------------------------------------------------
+Filters: "extreme ratio (limiter behavior)"
+Randomness seeded to: 3521271589
+===============================================================================
+All tests passed (1 assertion in 1 test case)
+
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Passed.
+"extreme ratio (limiter behavior)" end time: Feb 17 10:30 EST
+"extreme ratio (limiter behavior)" time elapsed: 00:00:00
+----------------------------------------------------------
+
+10/16 Testing: uncompressed signals (unity ratio)
+10/16 Test: uncompressed signals (unity ratio)
+Command: "/Users/sonic.design/CLionProjects/_vst_fx_vscode/Tests/build/dsp_tests" "uncompressed signals (unity ratio)"
+Directory: /Users/sonic.design/CLionProjects/_vst_fx_vscode/Tests/build
+"uncompressed signals (unity ratio)" start time: Feb 17 10:30 EST
+Output:
+----------------------------------------------------------
+Filters: "uncompressed signals (unity ratio)"
+Randomness seeded to: 527657389
+===============================================================================
+All tests passed (1 assertion in 1 test case)
+
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Passed.
+"uncompressed signals (unity ratio)" end time: Feb 17 10:30 EST
+"uncompressed signals (unity ratio)" time elapsed: 00:00:00
+----------------------------------------------------------
+
+11/16 Testing: lookahead sample count calculation at 48 kHz
+11/16 Test: lookahead sample count calculation at 48 kHz
+Command: "/Users/sonic.design/CLionProjects/_vst_fx_vscode/Tests/build/dsp_tests" "lookahead sample count calculation at 48 kHz"
+Directory: /Users/sonic.design/CLionProjects/_vst_fx_vscode/Tests/build
+"lookahead sample count calculation at 48 kHz" start time: Feb 17 10:30 EST
+Output:
+----------------------------------------------------------
+Filters: "lookahead sample count calculation at 48 kHz"
+Randomness seeded to: 567843308
+===============================================================================
+All tests passed (3 assertions in 1 test case)
+
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Passed.
+"lookahead sample count calculation at 48 kHz" end time: Feb 17 10:30 EST
+"lookahead sample count calculation at 48 kHz" time elapsed: 00:00:00
+----------------------------------------------------------
+
+12/16 Testing: lookahead sample count at 96 kHz
+12/16 Test: lookahead sample count at 96 kHz
+Command: "/Users/sonic.design/CLionProjects/_vst_fx_vscode/Tests/build/dsp_tests" "lookahead sample count at 96 kHz"
+Directory: /Users/sonic.design/CLionProjects/_vst_fx_vscode/Tests/build
+"lookahead sample count at 96 kHz" start time: Feb 17 10:30 EST
+Output:
+----------------------------------------------------------
+Filters: "lookahead sample count at 96 kHz"
+Randomness seeded to: 3945887193
+===============================================================================
+All tests passed (2 assertions in 1 test case)
+
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Passed.
+"lookahead sample count at 96 kHz" end time: Feb 17 10:30 EST
+"lookahead sample count at 96 kHz" time elapsed: 00:00:00
+----------------------------------------------------------
+
+13/16 Testing: attack time faster than release time
+13/16 Test: attack time faster than release time
+Command: "/Users/sonic.design/CLionProjects/_vst_fx_vscode/Tests/build/dsp_tests" "attack time faster than release time"
+Directory: /Users/sonic.design/CLionProjects/_vst_fx_vscode/Tests/build
+"attack time faster than release time" start time: Feb 17 10:30 EST
+Output:
+----------------------------------------------------------
+Filters: "attack time faster than release time"
+Randomness seeded to: 4238481005
+===============================================================================
+All tests passed (5 assertions in 1 test case)
+
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"attack time faster than release time" end time: Feb 17 10:30 EST
+"attack time faster than release time" time elapsed: 00:00:00
+----------------------------------------------------------
+
+14/16 Testing: extreme attack/release times
+14/16 Test: extreme attack/release times
+Command: "/Users/sonic.design/CLionProjects/_vst_fx_vscode/Tests/build/dsp_tests" "extreme attack/release times"
+Directory: /Users/sonic.design/CLionProjects/_vst_fx_vscode/Tests/build
+"extreme attack/release times" start time: Feb 17 10:30 EST
+Output:
+----------------------------------------------------------
+Filters: "extreme attack/release times"
+Randomness seeded to: 1017311658
+===============================================================================
+All tests passed (5 assertions in 1 test case)
+
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Passed.
+"extreme attack/release times" end time: Feb 17 10:30 EST
+"extreme attack/release times" time elapsed: 00:00:00
+----------------------------------------------------------
+
+15/16 Testing: threshold boundary behavior
+15/16 Test: threshold boundary behavior
+Command: "/Users/sonic.design/CLionProjects/_vst_fx_vscode/Tests/build/dsp_tests" "threshold boundary behavior"
+Directory: /Users/sonic.design/CLionProjects/_vst_fx_vscode/Tests/build
+"threshold boundary behavior" start time: Feb 17 10:30 EST
+Output:
+----------------------------------------------------------
+Filters: "threshold boundary behavior"
+Randomness seeded to: 3299950122
+===============================================================================
+All tests passed (3 assertions in 1 test case)
+
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Passed.
+"threshold boundary behavior" end time: Feb 17 10:30 EST
+"threshold boundary behavior" time elapsed: 00:00:00
+----------------------------------------------------------
+
+16/16 Testing: sidechain HPF frequency bounds
+16/16 Test: sidechain HPF frequency bounds
+Command: "/Users/sonic.design/CLionProjects/_vst_fx_vscode/Tests/build/dsp_tests" "sidechain HPF frequency bounds"
+Directory: /Users/sonic.design/CLionProjects/_vst_fx_vscode/Tests/build
+"sidechain HPF frequency bounds" start time: Feb 17 10:30 EST
+Output:
+----------------------------------------------------------
+Filters: "sidechain HPF frequency bounds"
+Randomness seeded to: 3113000812
+===============================================================================
+All tests passed (3 assertions in 1 test case)
+
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Passed.
+"sidechain HPF frequency bounds" end time: Feb 17 10:30 EST
+"sidechain HPF frequency bounds" time elapsed: 00:00:00
+----------------------------------------------------------
+
+End testing: Feb 17 10:30 EST
