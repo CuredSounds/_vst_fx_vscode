@@ -1,4 +1,5 @@
 #include "CompressorModule.h"
+#include "CompressorMath.h"
 
 //==============================================================================
 CompressorModule::CompressorModule()
@@ -25,6 +26,27 @@ void CompressorModule::prepare (double newSampleRate, int maxBlockSize, int newN
 
     // Allocate dry buffer for parallel compression
     dryBuffer.setSize (numChannels, maxBlockSize);
+
+    // Sidechain scratch buffer
+    sidechainScratchBuffer.setSize (numChannels, maxBlockSize);
+
+    // Prepare sidechain filter
+    juce::dsp::ProcessSpec spec;
+    spec.sampleRate = sampleRate;
+    spec.maximumBlockSize = static_cast<uint32_t> (maxBlockSize);
+    spec.numChannels = static_cast<uint32_t> (numChannels);
+    sidechainFilter.reset();
+    sidechainFilter.prepare (spec);
+
+    // Prepare lookahead buffer (maxLookaheadMs + block margin)
+    lookaheadBufferSize = static_cast<int> (std::ceil ((maxLookaheadMs / 1000.0) * sampleRate)) + maxBlockSize + 8;
+    lookaheadBuffer.setSize (numChannels, lookaheadBufferSize);
+    lookaheadBuffer.clear();
+    lookaheadWritePos = 0;
+    lookaheadDelaySamples = 0;
+
+    // Remember max block size for potential oversampler initialization
+    this->maxBlockSize = maxBlockSize;
 
     // Set smoothing ramp (20ms for parameter changes)
     const double smoothingTimeMs = 20.0;
@@ -64,9 +86,40 @@ void CompressorModule::process (juce::AudioBuffer<float>& mainBuffer,
     attackCoeff = std::exp (-1.0f / (params.attackMs * 0.001f * static_cast<float> (sampleRate)));
     releaseCoeff = std::exp (-1.0f / (params.releaseMs * 0.001f * static_cast<float> (sampleRate)));
 
-    // Store dry signal for parallel compression
+    // Update lookahead delay (in samples) from parameters
+    if (params.lookaheadEnabled)
+    {
+        const int requested = static_cast<int> (std::round (params.lookaheadMs * sampleRate / 1000.0));
+        lookaheadDelaySamples = juce::jlimit (0, lookaheadBufferSize - 1, requested);
+    }
+    else
+    {
+        lookaheadDelaySamples = 0;
+    }
+
+    // --- Oversampling: lazy init of juce::dsp::Oversampling when requested ---
+    if (params.oversampleEnabled && params.oversampleFactor > 1)
+    {
+        const int requestedFactor = params.oversampleFactor;
+        if (! oversampler || static_cast<int> (oversampler->getOversamplingFactor()) != requestedFactor)
+        {
+            // compute exponent (factor = 2^exp)
+            unsigned int exp = 0;
+            int tmp = requestedFactor;
+            while (tmp > 1) { tmp >>= 1; ++exp; }
+
+            oversampler.reset (new juce::dsp::Oversampling<float> (static_cast<size_t> (numChannels), exp, juce::dsp::Oversampling<float>::filterHalfBandPolyphaseIIR, true, false));
+            oversampler->initProcessing (static_cast<size_t> (maxBlockSize));
+        }
+    }
+    else
+    {
+        oversampler.reset();
+    }
+
+    // Store dry signal for parallel compression (for no-lookahead case we copy upfront)
     const bool needsDrySignal = params.mixPercent < 100.0f;
-    if (needsDrySignal)
+    if (needsDrySignal && params.lookaheadEnabled == false)
     {
         for (int ch = 0; ch < numProcessChannels; ++ch)
             dryBuffer.copyFrom (ch, 0, mainBuffer, ch, 0, numSamples);
@@ -77,24 +130,55 @@ void CompressorModule::process (juce::AudioBuffer<float>& mainBuffer,
                                   ? sidechainBuffer
                                   : &mainBuffer;
 
-    const int detectionChannels = std::min (numProcessChannels, detectionBuffer->getNumChannels());
+    // If sidechain HPF is requested and a sidechain buffer is present, copy and filter into scratch
+    const juce::AudioBuffer<float>* filteredDetection = detectionBuffer;
+    if (params.useSidechain && sidechainBuffer != nullptr && params.sidechainHpfFreq > 20.0f)
+    {
+
+    // Copy into scratch
+    sidechainScratchBuffer.makeCopyOf (*sidechainBuffer, true);
+
+    // Build audio block from scratch buffer and process filter
+    juce::dsp::AudioBlock<float> block (const_cast<float**> (sidechainScratchBuffer.getArrayOfWritePointers()),
+                        static_cast<size_t> (sidechainScratchBuffer.getNumChannels()),
+                        static_cast<size_t> (sidechainScratchBuffer.getNumSamples()));
+
+    // Set new coefficients for high-pass (using public coefficients method)
+    sidechainFilter.coefficients = juce::dsp::IIR::Coefficients<float>::makeHighPass (sampleRate, params.sidechainHpfFreq, 0.7071f);
+    juce::dsp::ProcessContextReplacing<float> ctx (block);
+    sidechainFilter.process (ctx);
+
+        filteredDetection = &sidechainScratchBuffer;
+    }
+
+    const int detectionChannels = std::min (numProcessChannels, filteredDetection->getNumChannels());
 
     // Peak GR tracker for metering
     float peakGR = 0.0f;
+    
+    // Level metering
+    float peakInputLevel = 0.0f;
+    float peakOutputLevel = 0.0f;
 
-    // Process each sample
+    // Process each sample (supports optional lookahead)
     for (int sample = 0; sample < numSamples; ++sample)
     {
         // 1. Compute detection signal (peak across channels)
         float detectionLevel = 0.0f;
         for (int ch = 0; ch < detectionChannels; ++ch)
         {
-            const float inputSample = detectionBuffer->getReadPointer (ch)[sample];
+            const float inputSample = filteredDetection->getReadPointer (ch)[sample];
             detectionLevel = std::max (detectionLevel, std::abs (inputSample));
+        }
+        
+        // Track input level (from main buffer)
+        for (int ch = 0; ch < numProcessChannels; ++ch)
+        {
+            const float sample_val = mainBuffer.getReadPointer (ch)[sample];
+            peakInputLevel = std::max (peakInputLevel, std::abs (sample_val));
         }
 
         // 2. Apply envelope follower (per-channel ballistics)
-        // For stereo link, we use the same envelope across channels
         float& envelope = envelopeState[0]; // Stereo-linked
 
         if (detectionLevel > envelope)
@@ -105,15 +189,11 @@ void CompressorModule::process (juce::AudioBuffer<float>& mainBuffer,
         // 3. Convert to dB
         const float envelopeDb = juce::Decibels::gainToDecibels (envelope + 1e-6f); // Avoid log(0)
 
-        // 4. Compute gain reduction
+        // 4. Compute gain reduction using header-only math helpers
         const float currentThreshold = smoothedThreshold.getNextValue();
         const float currentRatio = smoothedRatio.getNextValue();
 
-        Parameters currentParams = params;
-        currentParams.thresholdDb = currentThreshold;
-        currentParams.ratio = currentRatio;
-
-        const float gainReductionDb = computeGainReduction (envelopeDb, currentParams);
+        const float gainReductionDb = bc_dsp::computeGainReduction (envelopeDb, currentThreshold, currentRatio, params.kneeDb);
 
         // Track peak GR for metering
         peakGR = std::min (peakGR, gainReductionDb); // GR is negative
@@ -122,11 +202,46 @@ void CompressorModule::process (juce::AudioBuffer<float>& mainBuffer,
         const float makeupGain = juce::Decibels::decibelsToGain (smoothedMakeup.getNextValue());
         const float totalGain = juce::Decibels::decibelsToGain (gainReductionDb) * makeupGain;
 
-        // 6. Apply gain to all output channels
-        for (int ch = 0; ch < numProcessChannels; ++ch)
+        if (params.lookaheadEnabled && params.lookaheadMs > 0.001f)
         {
-            float* channelData = mainBuffer.getWritePointer (ch);
-            channelData[sample] *= totalGain;
+            // Write current input samples into lookahead buffer at write position
+            for (int ch = 0; ch < numProcessChannels; ++ch)
+            {
+                const float inS = mainBuffer.getReadPointer (ch)[sample];
+                lookaheadBuffer.setSample (ch, lookaheadWritePos, inS);
+            }
+
+            // Compute read position for delayed output
+            const int readPos = (lookaheadWritePos + lookaheadBufferSize - lookaheadDelaySamples) % lookaheadBufferSize;
+
+            // Read delayed samples, apply gain, and write back to main buffer
+            for (int ch = 0; ch < numProcessChannels; ++ch)
+            {
+                const float delayed = lookaheadBuffer.getSample (ch, readPos);
+                float processed = delayed * totalGain;
+                mainBuffer.getWritePointer (ch)[sample] = processed;
+                
+                // Track output level
+                peakOutputLevel = std::max (peakOutputLevel, std::abs (processed));
+
+                if (needsDrySignal)
+                    dryBuffer.setSample (ch, sample, delayed);
+            }
+
+            // advance write position
+            lookaheadWritePos = (lookaheadWritePos + 1) % lookaheadBufferSize;
+        }
+        else
+        {
+            // No lookahead: apply gain directly to current buffer
+            for (int ch = 0; ch < numProcessChannels; ++ch)
+            {
+                float* channelData = mainBuffer.getWritePointer (ch);
+                channelData[sample] *= totalGain;
+                
+                // Track output level
+                peakOutputLevel = std::max (peakOutputLevel, std::abs (channelData[sample]));
+            }
         }
     }
 
@@ -142,12 +257,18 @@ void CompressorModule::process (juce::AudioBuffer<float>& mainBuffer,
             const float* dryData = dryBuffer.getReadPointer (ch);
 
             for (int sample = 0; sample < numSamples; ++sample)
-                wetData[sample] = wetData[sample] * wetGain + dryData[sample] * dryGain;
+            {
+                const float mixed = wetData[sample] * wetGain + dryData[sample] * dryGain;
+                wetData[sample] = mixed;
+                peakOutputLevel = std::max (peakOutputLevel, std::abs (mixed));
+            }
         }
     }
 
-    // Store GR for metering
+    // Store metrics for metering
     currentGainReductionDb.store (peakGR);
+    currentInputLevelDb.store (peakInputLevel > 0.0f ? juce::Decibels::gainToDecibels (peakInputLevel) : -80.0f);
+    currentOutputLevelDb.store (peakOutputLevel > 0.0f ? juce::Decibels::gainToDecibels (peakOutputLevel) : -80.0f);
 }
 
 //==============================================================================
@@ -227,6 +348,11 @@ EffectModule::ParameterInfo CompressorModule::getParameterInfo (int index) const
         case 5: return { "makeup", "Makeup Gain", -12.0f, 12.0f, 0.0f, "dB", false };
         case 6: return { "mix", "Mix", 0.0f, 100.0f, 100.0f, "%", false };
         case 7: return { "sidechain", "Sidechain", 0.0f, 1.0f, 0.0f, "", true };
+        case 8: return { "sc_hpf", "Sidechain HPF", 20.0f, 2000.0f, 20.0f, "Hz", false };
+    case 9: return { "lookahead", "Lookahead", 0.0f, 1.0f, 0.0f, "", true };
+    case 10: return { "lookahead_ms", "Lookahead (ms)", 0.0f, 100.0f, 5.0f, "ms", false };
+    case 11: return { "oversample", "Oversample", 0.0f, 1.0f, 0.0f, "", true };
+    case 12: return { "oversample_factor", "Oversample Factor", 1.0f, 4.0f, 1.0f, "x", false };
         default: return {};
     }
 }
@@ -246,6 +372,11 @@ void CompressorModule::setParameterNormalized (int index, float normalizedValue)
         case 5: currentParams.makeupDb = value; break;
         case 6: currentParams.mixPercent = value; break;
         case 7: currentParams.useSidechain = normalizedValue > 0.5f; break;
+        case 8: currentParams.sidechainHpfFreq = value; break;
+        case 9: currentParams.lookaheadEnabled = normalizedValue > 0.5f; break;
+    case 10: currentParams.lookaheadMs = value; break;
+    case 11: currentParams.oversampleEnabled = normalizedValue > 0.5f; break;
+    case 12: currentParams.oversampleFactor = static_cast<int> (value) == 2 ? 2 : (static_cast<int> (value) == 4 ? 4 : 1); break;
     }
 }
 
@@ -264,6 +395,11 @@ float CompressorModule::getParameterNormalized (int index) const
         case 5: value = currentParams.makeupDb; break;
         case 6: value = currentParams.mixPercent; break;
         case 7: return currentParams.useSidechain ? 1.0f : 0.0f;
+        case 8: return currentParams.sidechainHpfFreq;
+        case 9: return currentParams.lookaheadEnabled ? 1.0f : 0.0f;
+    case 10: return currentParams.lookaheadMs;
+    case 11: return currentParams.oversampleEnabled ? 1.0f : 0.0f;
+    case 12: return static_cast<float> (currentParams.oversampleFactor);
     }
 
     return (value - info.minValue) / (info.maxValue - info.minValue);
@@ -280,6 +416,11 @@ juce::ValueTree CompressorModule::saveState() const
     state.setProperty ("makeup", currentParams.makeupDb, nullptr);
     state.setProperty ("mix", currentParams.mixPercent, nullptr);
     state.setProperty ("sidechain", currentParams.useSidechain, nullptr);
+    state.setProperty ("sc_hpf", currentParams.sidechainHpfFreq, nullptr);
+    state.setProperty ("lookahead", currentParams.lookaheadEnabled, nullptr);
+    state.setProperty ("lookahead_ms", currentParams.lookaheadMs, nullptr);
+    state.setProperty ("oversample", currentParams.oversampleEnabled, nullptr);
+    state.setProperty ("oversample_factor", currentParams.oversampleFactor, nullptr);
     return state;
 }
 
@@ -295,12 +436,19 @@ void CompressorModule::loadState (const juce::ValueTree& state)
         currentParams.makeupDb = state.getProperty ("makeup", 0.0f);
         currentParams.mixPercent = state.getProperty ("mix", 100.0f);
         currentParams.useSidechain = state.getProperty ("sidechain", false);
+        currentParams.sidechainHpfFreq = state.getProperty ("sc_hpf", 20.0f);
+        currentParams.lookaheadEnabled = state.getProperty ("lookahead", false);
+        currentParams.lookaheadMs = state.getProperty ("lookahead_ms", 5.0f);
+        currentParams.oversampleEnabled = state.getProperty ("oversample", false);
+        currentParams.oversampleFactor = static_cast<int> (state.getProperty ("oversample_factor", 1));
     }
 }
 
 EffectModule::MeterData CompressorModule::getMeterData() const
 {
     MeterData data;
+    data.inputLevel = currentInputLevelDb.load();
+    data.outputLevel = currentOutputLevelDb.load();
     data.gainReduction = currentGainReductionDb.load();
     return data;
 }

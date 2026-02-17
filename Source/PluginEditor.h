@@ -64,6 +64,10 @@ private:
 
     // Metering
     float currentGainReduction = 0.0f;
+    float inputLevel = -80.0f;
+    float outputLevel = -80.0f;
+    float peakInputLevel = -80.0f;
+    float peakOutputLevel = -80.0f;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (BCCompressorAudioProcessorEditor)
 };

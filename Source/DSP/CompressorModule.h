@@ -34,6 +34,11 @@ public:
         float makeupDb = 0.0f;          // -12 to +12 dB
         float mixPercent = 100.0f;      // 0 to 100%
         bool useSidechain = false;
+        float sidechainHpfFreq = 20.0f; // Hz
+        bool lookaheadEnabled = false;
+        float lookaheadMs = 5.0f;    // 0..100 ms
+        bool oversampleEnabled = false;
+        int oversampleFactor = 1; // 1,2,4
     };
 
     //==============================================================================
@@ -51,7 +56,7 @@ public:
     void process (juce::AudioBuffer<float>& buffer,
                   const juce::AudioBuffer<float>* sidechainBuffer = nullptr) override;
 
-    int getNumParameters() const override { return 8; }
+    int getNumParameters() const override { return 13; }
     ParameterInfo getParameterInfo (int index) const override;
     void setParameterNormalized (int index, float normalizedValue) override;
     float getParameterNormalized (int index) const override;
@@ -61,6 +66,9 @@ public:
 
     bool supportsSidechain() const override { return true; }
     MeterData getMeterData() const override;
+
+    /** Current processing latency introduced by lookahead (samples) */
+    int getLatencySamples() const override { return lookaheadDelaySamples; }
 
     //==============================================================================
     // Legacy interface (for standalone plugin wrapper)
@@ -81,9 +89,14 @@ private:
     //==============================================================================
     double sampleRate = 44100.0;
     int numChannels = 2;
+    int maxBlockSize = 0;
 
     // Envelope follower state per channel
     std::vector<float> envelopeState;
+
+    // Sidechain filter and scratch buffer
+    juce::dsp::IIR::Filter<float> sidechainFilter;
+    juce::AudioBuffer<float> sidechainScratchBuffer;
 
     // Smoothed parameters (for avoiding zipper noise)
     juce::SmoothedValue<float> smoothedThreshold;
@@ -98,8 +111,22 @@ private:
     // Current GR for metering
     std::atomic<float> currentGainReductionDb { 0.0f };
 
+    // Level metering (for UI display)
+    std::atomic<float> currentInputLevelDb { -80.0f };
+    std::atomic<float> currentOutputLevelDb { -80.0f };
+
     // Dry buffer for parallel compression
     juce::AudioBuffer<float> dryBuffer;
+
+    // Lookahead buffer (for lookahead compression)
+    juce::AudioBuffer<float> lookaheadBuffer;
+    int lookaheadBufferSize = 0;
+    int lookaheadWritePos = 0;
+    int lookaheadDelaySamples = 0; // current lookahead in samples
+    float maxLookaheadMs = 100.0f; // maximum supported lookahead (ms)
+
+    // Oversampling helper (prepared when enabled)
+    std::unique_ptr<juce::dsp::Oversampling<float>> oversampler;
 
     // Current parameter state (for EffectModule interface)
     Parameters currentParams;
